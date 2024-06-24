@@ -1,0 +1,8 @@
+[Update]
+NewVersion=0
+UpdateFileNumber=2
+UpdateFile1=update/ServerConfig.dat
+UpdateFile2=Download/PatchInfo.z
+
+ServerNumber=1
+Server1=http://127.0.0.1/

@@ -1,0 +1,20 @@
+[LoginServer]
+ServerNumber = 3
+Server0 = 127.0.0.1
+Server1 = 127.0.0.1
+Server2 = 127.0.0.1
+
+[PatchServer]
+ServerNumber = 4
+Server0 = 127.0.0.1
+Server1 = 127.0.0.1
+Server2 = 127.0.0.1
+
+[Notice]
+Server = 0.0.0.0
+
+[LogCollector]
+Server = 127.0.0.1
+
+[ServerList]
+Server1 = 1

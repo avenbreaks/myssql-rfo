@@ -1,0 +1,168 @@
+<?php
+
+
+// Variables
+
+   $PatchInfo_ver = 91;
+   $LPServerInfo_ver = 1;
+   $main_launcher_ver  = 718;			// Current (new) RF.exe version.
+
+   $main_launcher_file_path = 'update';		// Relative path from root RF site.
+   $LPServerInfo_file_path = 'update';		// Relative path from root RF site.
+   $PatchInfo_path = 'update';			// Relative path from root RF site.
+
+   $use_archive_three = true;			// We will use "indexed" patch location.
+
+   $main_launcher_host   = '127.0.0.1';
+
+   $LPServerInfo_host[0] = '127.0.0.1';
+
+   $PatchInfo_host[0]    = '127.0.0.1';
+
+
+
+
+function terminate_script() {
+
+	header('Connection: close');
+	header('Content-Length: 0');
+
+	exit;
+
+}
+
+
+	if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+
+//		terminate_script();
+
+	} elseif (!$_SERVER['HTTP_USER_AGENT']=='HTTP') {
+
+//		terminate_script();
+
+	} else {	
+
+//		terminate_script();
+
+	}
+
+
+
+	if (!isset($_SERVER['QUERY_STRING'])) {
+
+		terminate_script();
+
+	}
+
+
+	$query_ver=$_SERVER['QUERY_STRING'];
+
+
+	if (!is_numeric($_SERVER['QUERY_STRING'])) {
+
+		terminate_script();
+
+	}
+
+
+	$user_launcher_ver = intval($_SERVER['QUERY_STRING']);
+
+
+	if ($user_launcher_ver < $main_launcher_ver && $user_launcher_ver > 0) {
+
+
+		$streamtxt  = "[Update]\n";
+		$streamtxt .= "NewVersion=$main_launcher_ver\n";
+		$streamtxt .= "UpdateFileNumber=1\n";
+
+		if ($use_archive_three) {
+
+		    $streamtxt .= "UpdateFile1=$main_launcher_file_path$main_launcher_ver/newRF.cab\n";
+
+		  } else {
+
+		    $streamtxt .= "UpdateFile1=$main_launcher_file_path/newRF.cab\n";
+
+		}
+
+		$streamtxt .= "ServerNumber=1\n";
+		$streamtxt .= "Server1=http://$main_launcher_host/\n";
+		$streamtxt .= "[Launcher]\n";
+		$streamtxt .= "LauncherVersion=$main_launcher_ver";
+
+		echo $streamtxt;
+		exit;
+
+
+	} elseif ($user_launcher_ver >= $main_launcher_ver) {
+
+		$streamtxt  = "[Update]\n";
+		$streamtxt .= "UpdateFileNumber=0";
+
+		echo $streamtxt;
+		exit;
+
+	} elseif ($user_launcher_ver == 0) {
+
+		if ($_SERVER['SERVER_PORT']==8080) {
+
+
+		    $streamtxt  = "[Update]\n";
+		    $streamtxt .= "NewVersion=$LPServerInfo_ver\n";
+		    $streamtxt .= "UpdateFileNumber=1\n";
+
+		    if ($use_archive_three) {
+
+			$streamtxt .= "UpdateFile1=$LPServerInfo_file_path$LPServerInfo_ver/LPServerInfo.dat\n";
+
+		      } else {
+
+			$streamtxt .= "UpdateFile1=$LPServerInfo_file_path/LPServerInfo.dat\n";
+
+		    }
+
+		    $streamtxt .= "ServerNumber=".sizeof($LPServerInfo_host);
+
+			for ($i=0; $i<sizeof($LPServerInfo_host); $i++) {
+
+			     $streamtxt .= "\nServer".($i+1)."=http://".$LPServerInfo_host[$i]."/";
+
+			}
+
+		    echo $streamtxt;
+		    exit;
+
+		} elseif ($_SERVER['SERVER_PORT']==10007) {
+
+
+		    $streamtxt  = "[Update]\n";
+		    $streamtxt .= "NewVersion=$PatchInfo_ver\n";
+		    $streamtxt .= "UpdateFileNumber=1\n";
+
+		    if ($use_archive_three) {
+
+		        $streamtxt .= "UpdateFile1=$PatchInfo_path$PatchInfo_ver/PatchInfo.z\n";
+
+		      } else {
+
+		        $streamtxt .= "UpdateFile1=$PatchInfo_path/PatchInfo.z\n";
+
+		    }
+
+		    $streamtxt .= "ServerNumber=".sizeof($PatchInfo_host);
+
+			for ($i=0; $i<sizeof($LPServerInfo_host); $i++) {
+
+			     $streamtxt .= "\nServer".($i+1)."=http://".$PatchInfo_host[$i]."/";
+
+			}
+
+		    echo $streamtxt;
+		    exit;
+
+		} else {
+
+		   terminate_script();
+		}
+	}
+?>

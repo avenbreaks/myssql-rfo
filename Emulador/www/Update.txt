@@ -1,0 +1,8 @@
+[Update]
+NewVersion=0
+UpdateFileNumber=3
+UpdateFile1=update1/serverconfig.txt
+UpdateFile2=update1/LauncherMessage.ini
+UpdateFile3=update1/PatchInfo.z
+ServerNumber=1
+Server1=http://127.0.0.1/
